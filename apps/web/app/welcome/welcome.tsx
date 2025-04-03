@@ -1,7 +1,17 @@
+import { client } from "~/lib/hc";
 import logoDark from "./logo-dark.svg";
 import logoLight from "./logo-light.svg";
 
 export function Welcome() {
+  const handleClick = async () => {
+    const d = await client.index.$get();
+    if (d.statusText !== "OK") {
+      console.error("Error fetching data");
+      return;
+    }
+    const data = await d.json();
+    console.log("data", data);
+  };
   return (
     <main className="flex items-center justify-center pt-16 pb-4">
       <div className="flex-1 flex flex-col items-center gap-16 min-h-0">
@@ -40,6 +50,12 @@ export function Welcome() {
               ))}
             </ul>
           </nav>
+          <button
+            onClick={handleClick}
+            className="w-full rounded-3xl border border-gray-200 p-6 dark:border-gray-700 text-center text-gray-700 dark:text-gray-200"
+          >
+            click me
+          </button>
         </div>
       </div>
     </main>
